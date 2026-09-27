@@ -18,7 +18,7 @@ class Event:
 events = [Event(1, 'Tech Meetup'), Event(2, 'Python Workshop')]
 
 
-# Helper function to find an event by ID (addresses the lab's "Duplicate Logic" consideration)
+# Helper function to find an event by ID
 def find_event_by_id(event_id):
   for event in events:
     if event.id == event_id:
@@ -26,13 +26,19 @@ def find_event_by_id(event_id):
   return None
 
 
-# GET: Retrieve all events (often expected by automated tests even if just POST/PATCH/DELETE were highlighted)
+# 1. JSON welcome message at the root route
+@app.route('/')
+def home():
+  return jsonify({'message': 'Welcome to the Flask CRUD API!'}), 200
+
+
+# 2. GET request to /events returning a JSON array
 @app.route('/events', methods=['GET'])
 def get_events():
   return jsonify([event.to_dict() for event in events]), 200
 
 
-# POST: Create a new event
+# 3. POST request to /events returning 201 Created
 @app.route('/events', methods=['POST'])
 def create_event():
   data = request.get_json()
